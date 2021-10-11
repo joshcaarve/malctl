@@ -107,11 +107,11 @@ func (c *MalctlClient) MangaList(ctx context.Context) {
 	}
 }
 
-func (c *MalctlClient) AnimeDetails(ctx context.Context) {
+func (c *MalctlClient) AnimeDetails(ctx context.Context, id int) {
 	if c.err != nil {
 		return
 	}
-	a, _, err := c.Anime.Details(ctx, 967,
+	a, _, err := c.Anime.Details(ctx, id,
 		mal.Fields{
 			"alternative_titles",
 			"media_type",
@@ -121,6 +121,7 @@ func (c *MalctlClient) AnimeDetails(ctx context.Context) {
 			"genres",
 			"studios",
 			"average_episode_duration",
+			"score",
 		},
 	)
 
@@ -226,7 +227,18 @@ func (c *MalctlClient) UserAnimeList(ctx context.Context, status mal.AnimeStatus
 		return
 	}
 	anime, _, err := c.User.AnimeList(ctx, "@me",
-		mal.Fields{"list_status"},
+		mal.Fields{
+			"list_status",
+			"alternative_titles",
+			"media_type",
+			"num_episodes",
+			"start_season",
+			"source",
+			"genres",
+			"studios",
+			"average_episode_duration",
+			"score",
+		},
 		status,
 		mal.SortAnimeListByListUpdatedAt,
 		mal.Limit(100),
@@ -236,7 +248,13 @@ func (c *MalctlClient) UserAnimeList(ctx context.Context, status mal.AnimeStatus
 		return
 	}
 	for _, a := range anime {
-		fmt.Printf("ID: %5d, Status: %1q, Episodes Watched: %3d %s\n", a.Anime.ID, a.Status.Status, a.Status.NumEpisodesWatched, a.Anime.Title)
+
+		if a.Anime.AlternativeTitles.En != "" {
+			fmt.Printf("%5d %4d/%3d %2d %s\n", a.Anime.ID, a.Status.NumEpisodesWatched, a.Anime.NumEpisodes, a.Status.Score, a.Anime.AlternativeTitles.En)
+		} else {
+			fmt.Printf("%5d %4d/%3d %2d %s\n", a.Anime.ID, a.Status.NumEpisodesWatched, a.Anime.NumEpisodes, a.Status.Score, a.Anime.Title)
+		}
+
 	}
 }
 

@@ -21,8 +21,8 @@ type clientInfo struct {
 }
 
 const (
-	cacheName     = "secrets/auth-token-cache.txt"
-	clientSecrets = "secrets/client.txt"
+	cacheName     = "secrets/auth-token-cache.json"
+	clientSecrets = "secrets/client.json"
 )
 
 func CreateTokenClient() (*http.Client, error) {

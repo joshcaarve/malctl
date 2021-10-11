@@ -1,6 +1,6 @@
 # Current Secrets Folder:
 
-auth-token-cache.txt:
+auth-token-cache.json:
 ```json
 {
    "access_token": "<>",
@@ -10,7 +10,7 @@ auth-token-cache.txt:
 }
 ```
 
-client.txt:
+client.json:
 ```json
 {
     "clientID": "<>",

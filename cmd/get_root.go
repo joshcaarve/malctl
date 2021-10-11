@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"malctl/cmd/get/anime"
 	"malctl/cmd/get/user"
 
 	"github.com/spf13/cobra"
@@ -18,7 +19,7 @@ var getCmd = &cobra.Command{
 		} else if args[0] == "user" {
 			user.GetUserInfo(args[1:])
 		} else if args[0] == "anime" {
-			fmt.Println("WIP")
+			anime.GetAnimeInfo(args[1:])
 		} else {
 			fmt.Println("Incorrect resource type")
 		}
