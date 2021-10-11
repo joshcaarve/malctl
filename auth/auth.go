@@ -15,7 +15,7 @@ import (
 	"golang.org/x/oauth2"
 )
 
-type ClientInfo struct {
+type clientInfo struct {
 	ClientID     string `json:"clientID"`
 	ClientSecret string `json:"clientSecret"`
 }
@@ -31,7 +31,7 @@ func CreateTokenClient() (*http.Client, error) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	var clientInfo ClientInfo
+	var clientInfo clientInfo
 
 	err = json.Unmarshal(clientFile, &clientInfo)
 	ctx := context.Background()

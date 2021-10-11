@@ -3,17 +3,31 @@ package client
 import (
 	"context"
 	"fmt"
+	"log"
+	"malctl/auth"
 	"strings"
 
 	"github.com/nstratos/go-myanimelist/mal"
 )
 
-type DemoClient struct {
+var Client MalctlClient
+
+type MalctlClient struct {
 	*mal.Client
 	err error
 }
 
-func (c *DemoClient) Showcase(ctx context.Context) error {
+func Init() {
+	tokenClient, err := auth.CreateTokenClient()
+	if err != nil {
+		log.Fatal(err)
+	}
+	Client = MalctlClient{
+		Client: mal.NewClient(tokenClient),
+	}
+}
+
+func (c *MalctlClient) Showcase(ctx context.Context) error {
 	methods := []func(context.Context){
 		// Uncomment the methods you need to see their results. Run or build
 		// using -tags=debug to see the full HTTP request and response.
@@ -28,7 +42,6 @@ func (c *DemoClient) Showcase(ctx context.Context) error {
 		// c.animeSuggested,
 		// c.animeListForLoop, // Warning: Many requests.
 		// c.updateMyAnimeListStatus,
-		c.UserAnimeList,
 		// c.deleteMyAnimeListItem,
 		// c.updateMyMangaListStatus,
 		// c.userMangaList,
@@ -46,7 +59,7 @@ func (c *DemoClient) Showcase(ctx context.Context) error {
 	return nil
 }
 
-func (c *DemoClient) UserMyInfo(ctx context.Context) {
+func (c *MalctlClient) UserMyInfo(ctx context.Context) {
 	if c.err != nil {
 		return
 	}
@@ -58,7 +71,7 @@ func (c *DemoClient) UserMyInfo(ctx context.Context) {
 	fmt.Printf("ID: %5d, Joined: %v, Username: %s\n", u.ID, u.JoinedAt.Format("Jan 2006"), u.Name)
 }
 
-func (c *DemoClient) AnimeList(ctx context.Context) {
+func (c *MalctlClient) AnimeList(ctx context.Context) {
 	if c.err != nil {
 		return
 	}
@@ -76,7 +89,7 @@ func (c *DemoClient) AnimeList(ctx context.Context) {
 	}
 }
 
-func (c *DemoClient) MangaList(ctx context.Context) {
+func (c *MalctlClient) MangaList(ctx context.Context) {
 	if c.err != nil {
 		return
 	}
@@ -94,7 +107,7 @@ func (c *DemoClient) MangaList(ctx context.Context) {
 	}
 }
 
-func (c *DemoClient) AnimeDetails(ctx context.Context) {
+func (c *MalctlClient) AnimeDetails(ctx context.Context) {
 	if c.err != nil {
 		return
 	}
@@ -139,7 +152,7 @@ func (c *DemoClient) AnimeDetails(ctx context.Context) {
 	fmt.Printf("Duration: %d min. per ep.\n", a.AverageEpisodeDuration/60)
 }
 
-func (c *DemoClient) MangaDetails(ctx context.Context) {
+func (c *MalctlClient) MangaDetails(ctx context.Context) {
 	if c.err != nil {
 		return
 	}
@@ -181,7 +194,7 @@ func (c *DemoClient) MangaDetails(ctx context.Context) {
 	fmt.Printf("Status: %s\n", strings.Title(m.Status))
 }
 
-func (c *DemoClient) AnimeListForLoop(ctx context.Context) {
+func (c *MalctlClient) AnimeListForLoop(ctx context.Context) {
 	if c.err != nil {
 		return
 	}
@@ -208,26 +221,26 @@ func (c *DemoClient) AnimeListForLoop(ctx context.Context) {
 	}
 }
 
-func (c *DemoClient) UserAnimeList(ctx context.Context) {
+func (c *MalctlClient) UserAnimeList(ctx context.Context, status mal.AnimeStatus) {
 	if c.err != nil {
 		return
 	}
 	anime, _, err := c.User.AnimeList(ctx, "@me",
 		mal.Fields{"list_status"},
-		mal.AnimeStatusWatching,
+		status,
 		mal.SortAnimeListByListUpdatedAt,
-		mal.Limit(5),
+		mal.Limit(100),
 	)
 	if err != nil {
 		c.err = err
 		return
 	}
 	for _, a := range anime {
-		fmt.Printf("ID: %5d, Status: %15q, Episodes Watched: %3d %s\n", a.Anime.ID, a.Status.Status, a.Status.NumEpisodesWatched, a.Anime.Title)
+		fmt.Printf("ID: %5d, Status: %1q, Episodes Watched: %3d %s\n", a.Anime.ID, a.Status.Status, a.Status.NumEpisodesWatched, a.Anime.Title)
 	}
 }
 
-func (c *DemoClient) UserMangaList(ctx context.Context) {
+func (c *MalctlClient) UserMangaList(ctx context.Context) {
 	if c.err != nil {
 		return
 	}
@@ -246,7 +259,7 @@ func (c *DemoClient) UserMangaList(ctx context.Context) {
 	}
 }
 
-func (c *DemoClient) UpdateMyAnimeListStatus(ctx context.Context) {
+func (c *MalctlClient) UpdateMyAnimeListStatus(ctx context.Context) {
 	if c.err != nil {
 		return
 	}
@@ -263,7 +276,7 @@ func (c *DemoClient) UpdateMyAnimeListStatus(ctx context.Context) {
 	fmt.Printf("Status: %q, Score: %d, Episodes Watched: %d, Comments: %s\n", s.Status, s.Score, s.NumEpisodesWatched, s.Comments)
 }
 
-func (c *DemoClient) UpdateMyMangaListStatus(ctx context.Context) {
+func (c *MalctlClient) UpdateMyMangaListStatus(ctx context.Context) {
 	if c.err != nil {
 		return
 	}
@@ -280,7 +293,7 @@ func (c *DemoClient) UpdateMyMangaListStatus(ctx context.Context) {
 	fmt.Printf("Status: %q, Volumes Read: %d, Chapters Read: %d, Comments: %s\n", s.Status, s.NumVolumesRead, s.NumChaptersRead, s.Comments)
 }
 
-func (c *DemoClient) DeleteMyAnimeListItem(ctx context.Context) {
+func (c *MalctlClient) DeleteMyAnimeListItem(ctx context.Context) {
 	if c.err != nil {
 		return
 	}
@@ -291,7 +304,7 @@ func (c *DemoClient) DeleteMyAnimeListItem(ctx context.Context) {
 	}
 }
 
-func (c *DemoClient) DeleteMyMangaListItem(ctx context.Context) {
+func (c *MalctlClient) DeleteMyMangaListItem(ctx context.Context) {
 	if c.err != nil {
 		return
 	}
@@ -302,7 +315,7 @@ func (c *DemoClient) DeleteMyMangaListItem(ctx context.Context) {
 	}
 }
 
-func (c *DemoClient) AnimeRanking(ctx context.Context) {
+func (c *MalctlClient) AnimeRanking(ctx context.Context) {
 	if c.err != nil {
 		return
 	}
@@ -327,7 +340,7 @@ func (c *DemoClient) AnimeRanking(ctx context.Context) {
 	}
 }
 
-func (c *DemoClient) MangaRanking(ctx context.Context) {
+func (c *MalctlClient) MangaRanking(ctx context.Context) {
 	if c.err != nil {
 		return
 	}
@@ -345,7 +358,7 @@ func (c *DemoClient) MangaRanking(ctx context.Context) {
 	}
 }
 
-func (c *DemoClient) AnimeSeasonal(ctx context.Context) {
+func (c *MalctlClient) AnimeSeasonal(ctx context.Context) {
 	if c.err != nil {
 		return
 	}
@@ -364,7 +377,7 @@ func (c *DemoClient) AnimeSeasonal(ctx context.Context) {
 	}
 }
 
-func (c *DemoClient) AnimeSuggested(ctx context.Context) {
+func (c *MalctlClient) AnimeSuggested(ctx context.Context) {
 	if c.err != nil {
 		return
 	}
@@ -381,7 +394,7 @@ func (c *DemoClient) AnimeSuggested(ctx context.Context) {
 	}
 }
 
-func (c *DemoClient) ForumBoards(ctx context.Context) {
+func (c *MalctlClient) ForumBoards(ctx context.Context) {
 	if c.err != nil {
 		return
 	}
@@ -402,7 +415,7 @@ func (c *DemoClient) ForumBoards(ctx context.Context) {
 	}
 }
 
-func (c *DemoClient) ForumTopics(ctx context.Context) {
+func (c *MalctlClient) ForumTopics(ctx context.Context) {
 	if c.err != nil {
 		return
 	}
@@ -420,7 +433,7 @@ func (c *DemoClient) ForumTopics(ctx context.Context) {
 	}
 }
 
-func (c *DemoClient) ForumTopicDetails(ctx context.Context) {
+func (c *MalctlClient) ForumTopicDetails(ctx context.Context) {
 	if c.err != nil {
 		return
 	}
