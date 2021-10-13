@@ -1,4 +1,4 @@
-# mal-go-cli
+# malctl
 
 `malctl [command] [TYPE] [NAME] [flags]`
 
