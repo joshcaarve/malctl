@@ -106,6 +106,30 @@ func (c *MalctlClient) MangaList(ctx context.Context) {
 		fmt.Printf("ID: %5d, Volumes: %3d, Chapters: %3d %s (%s)\n", m.ID, m.NumVolumes, m.NumChapters, m.Title, m.AlternativeTitles.En)
 	}
 }
+func (c *MalctlClient) AnimeIDEnglish(ctx context.Context, id int) string {
+	if c.err != nil {
+		return ""
+	}
+	a, _, err := c.Anime.Details(ctx, id,
+		mal.Fields{
+			"alternative_titles",
+			"media_type",
+			"num_episodes",
+			"start_season",
+			"source",
+			"genres",
+			"studios",
+			"average_episode_duration",
+			"score",
+		},
+	)
+
+	if err != nil {
+		c.err = err
+		return ""
+	}
+	return a.AlternativeTitles.En
+}
 
 func (c *MalctlClient) AnimeDetails(ctx context.Context, id int) {
 	if c.err != nil {

@@ -1,13 +1,9 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"malctl/animehash"
 	"malctl/client"
 	"malctl/cmd"
 	"malctl/xmlparse"
-	"os"
 )
 
 const (
@@ -23,15 +19,16 @@ func xmlToString(urlSetXML xmlparse.UrlSetXML) []string {
 }
 
 func main() {
-	urlSetXML := xmlparse.GetUrlSetXML(url)
-	animeUrls := xmlToString(urlSetXML)
-	animeHash := animehash.GetAnimeHashList(animeUrls)
-	if animeHash != nil {
-		animeHashJSON, _ := json.Marshal(animeHash)
-		fmt.Println(string(animeHashJSON))
-	}
+	/*
+		urlSetXML := xmlparse.GetUrlSetXML(url)
+		animeUrls := xmlToString(urlSetXML)
+		animeHash := animehash.GetAnimeHashList(animeUrls)
 
-	os.Exit(0)
+			if animeHash != nil {
+				animeHashJSON, _ := json.Marshal(animeHash)
+				fmt.Println(string(animeHashJSON))
+			}
+	*/
 	client.Init()
 	cmd.Execute()
 }

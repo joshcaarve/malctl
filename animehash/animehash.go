@@ -1,6 +1,7 @@
 package animehash
 
 import (
+	"malctl/cmd/get/anime"
 	"malctl/util"
 	"strings"
 )
@@ -22,8 +23,17 @@ func GetAnimeHashList(urls []string) AnimeIDHash {
 		var animeName AnimeName
 		urlShort := strings.ReplaceAll(url, urlConst, "")
 		animeID := util.StringBefore(urlShort, "/")
-		animeName.Name = util.StringAfter(urlShort, "/")
+		animeName.EnglishName = anime.GetEnglishName(animeID)
+		animeName.Name = cleanName(util.StringAfter(urlShort, "/"))
 		animeIDHash[animeID] = animeName
 	}
 	return animeIDHash
+}
+
+// Xi_Yang_Yang_Yu_Hui_Tai_Lang__Zhi_Hu_Hu_Sheng_Wei
+// Yawaraka_Sangokushi_Tsukisase_Ryofuko-chan
+func cleanName(animeName string) string {
+	cleanAnimeName := strings.ReplaceAll(animeName, "__", ": ")
+	cleanAnimeName = strings.ReplaceAll(cleanAnimeName, "_", " ")
+	return cleanAnimeName
 }

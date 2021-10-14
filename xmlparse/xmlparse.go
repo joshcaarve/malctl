@@ -8,12 +8,6 @@ import (
 	"net/http"
 )
 
-type AnimeIDHash struct {
-	Name        string
-	ID          int
-	EnglishName string
-}
-
 type UrlSetXML struct {
 	XMLName xml.Name `xml:"urlset"`
 	Xmlns   string   `xml:"xmlns,attr"`
@@ -25,7 +19,6 @@ type UrlXML struct {
 	ChangeFreq string   `xml:"changefreq"`
 	Priority   string   `xml:"priority"`
 }
-
 
 func GetUrlSetXML(url string) UrlSetXML {
 	var result UrlSetXML

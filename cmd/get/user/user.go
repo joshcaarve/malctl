@@ -9,6 +9,9 @@ import (
 )
 
 func GetUserInfo(args []string) {
+	if args == nil {
+		return
+	}
 	if args[0] == "info" {
 		ctx := context.Background()
 		client.Client.UserMyInfo(ctx)

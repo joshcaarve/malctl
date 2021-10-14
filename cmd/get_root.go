@@ -17,9 +17,25 @@ var getCmd = &cobra.Command{
 		if len(args) == 0 {
 			fmt.Println("Get What?!")
 		} else if args[0] == "user" {
-			guser.GetUserInfo(args[1:])
+			if len(args) == 1 {
+				fmt.Println("get user <>")
+			} else {
+				guser.GetUserInfo(args[1:])
+			}
+
 		} else if args[0] == "anime" {
-			ganime.GetAnimeInfo(args[1:])
+			if len(args) == 1 {
+				fmt.Println("get anime <>")
+			} else {
+				if args[1] == "id" {
+					ganime.GetAnimeInfo(args[2])
+				} else if args[1] == "name" {
+					
+					ganime.GetAnimeInfo(args[2])
+				}
+
+			}
+
 		} else {
 			fmt.Println("Incorrect resource type")
 		}
