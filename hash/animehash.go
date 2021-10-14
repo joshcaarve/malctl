@@ -30,8 +30,6 @@ func GetAnimeHashList(urls []string) AnimeIDHash {
 	return animeIDHash
 }
 
-// Xi_Yang_Yang_Yu_Hui_Tai_Lang__Zhi_Hu_Hu_Sheng_Wei
-// Yawaraka_Sangokushi_Tsukisase_Ryofuko-chan
 func cleanName(animeName string) string {
 	cleanAnimeName := strings.ReplaceAll(animeName, "__", ": ")
 	cleanAnimeName = strings.ReplaceAll(cleanAnimeName, "_", " ")
