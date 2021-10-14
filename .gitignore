@@ -19,3 +19,5 @@ secrets/*.txt
 **.json
 **.xml
 *.txt
+
+malctl
