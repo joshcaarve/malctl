@@ -25,7 +25,7 @@ func GetAnimeNameID(animeID string) string {
 	return animeIDHash[animeID].Name
 }
 
-func GetAnimeIDName(name string) string {
+func GetAnimeIDFromName(name string) string {
 	clientFile, err := os.ReadFile(DbPath)
 	if err != nil {
 		log.Fatal(err)

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	ganime "malctl/cmd/get/anime"
 	guser "malctl/cmd/get/user"
+	"malctl/db"
 
 	"github.com/spf13/cobra"
 )
@@ -30,12 +31,14 @@ var getCmd = &cobra.Command{
 				if args[1] == "id" {
 					ganime.GetAnimeInfo(args[2])
 				} else if args[1] == "name" {
-					
-					ganime.GetAnimeInfo(args[2])
+					id := db.GetAnimeIDFromName(args[2])
+					if id == "" {
+						fmt.Println("Unknown Name")
+					} else {
+						ganime.GetAnimeInfo(id)
+					}
 				}
-
 			}
-
 		} else {
 			fmt.Println("Incorrect resource type")
 		}
