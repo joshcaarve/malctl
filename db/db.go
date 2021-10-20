@@ -3,7 +3,7 @@ package db
 import (
 	"encoding/json"
 	"log"
-	"malctl/animehash"
+	"malctl/hash"
 	"os"
 )
 
@@ -16,7 +16,7 @@ func GetAnimeNameID(animeID string) string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	var animeIDHash animehash.AnimeIDHash
+	var animeIDHash hash.AnimeIDHash
 
 	err = json.Unmarshal(clientFile, &animeIDHash)
 	if err != nil {
@@ -30,7 +30,7 @@ func GetAnimeIDFromName(name string) string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	var animeIDHash animehash.AnimeIDHash
+	var animeIDHash hash.AnimeIDHash
 
 	err = json.Unmarshal(clientFile, &animeIDHash)
 	if err != nil {

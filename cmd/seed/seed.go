@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"log"
-	"malctl/animehash"
 	"malctl/db"
+	"malctl/hash"
 	"malctl/xmlparse"
 )
 
@@ -24,7 +24,7 @@ func xmlToString(urlSetXML xmlparse.UrlSetXML) []string {
 func SeedAnimeHash(custom string) {
 	urlSetXML := xmlparse.GetUrlSetXML(url)
 	animeUrls := xmlToString(urlSetXML)
-	animeHash := animehash.GetAnimeHashList(animeUrls)
+	animeHash := hash.GetAnimeHashList(animeUrls)
 	file, _ := json.MarshalIndent(animeHash, "", " ")
 
 	err := ioutil.WriteFile(db.DbPath, file, 0644)

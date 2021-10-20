@@ -1,4 +1,4 @@
-package animehash
+package hash
 
 import (
 	"malctl/cmd/get/anime"
