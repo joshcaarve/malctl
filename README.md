@@ -1,23 +1,15 @@
 # malctl
 
-`malctl [command] [TYPE] [NAME] [flags]`
+`malctl`
 
+```sh
+$ malctl get user anime complete
+$ malctl get user anime watch
+$ malctl get user anime hold
+$ malctl get user anime plan
+```
 
-# get (start with only anime)
-malctl get anime [name]
-
-gets status, rating, num episodes watched
-
-ex: Completed, (7) Good, 13/13
- 
-flags
-
---rating
-
---status
-
---numwatch
-
---description
-
---webrating
+```sh
+$ malctl get anime id 34914
+$ malctl get anime name "Neon Genesis Evangelion"
+```
