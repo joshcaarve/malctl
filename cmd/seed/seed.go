@@ -2,6 +2,7 @@ package seed
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"malctl/db"
@@ -22,6 +23,7 @@ func xmlToString(urlSetXML xmlparse.UrlSetXML) []string {
 }
 
 func SeedAnimeHash(custom string) {
+	fmt.Println("Processing seed...")
 	urlSetXML := xmlparse.GetUrlSetXML(url)
 	animeUrls := xmlToString(urlSetXML)
 	animeHash := hash.GetAnimeHashList(animeUrls)
@@ -31,4 +33,5 @@ func SeedAnimeHash(custom string) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("Seed complete")
 }
