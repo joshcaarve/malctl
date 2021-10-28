@@ -301,6 +301,21 @@ func (c *MalctlClient) UserMangaList(ctx context.Context) {
 	}
 }
 
+func (c *MalctlClient) RateAnime(ctx context.Context, id, score int) {
+	if c.err != nil {
+		return
+	}
+	s, _, err := c.Anime.UpdateMyListStatus(ctx, id,
+		mal.Score(score),
+	)
+	if err != nil {
+		log.Println(err)
+		c.err = err
+		return
+	}
+	fmt.Printf("Status: %q, Score: %d, Episodes Watched: %d, Comments: %s\n", s.Status, s.Score, s.NumEpisodesWatched, s.Comments)
+}
+
 func (c *MalctlClient) UpdateMyAnimeListStatus(ctx context.Context) {
 	if c.err != nil {
 		return
