@@ -19,5 +19,5 @@ secrets/*.txt
 **.json
 **.xml
 *.txt
-
+**.html
 malctl

@@ -5,6 +5,7 @@ import (
 	ganime "malctl/cmd/get/anime"
 	guser "malctl/cmd/get/user"
 	"malctl/db"
+	"malctl/guess"
 
 	"github.com/spf13/cobra"
 )
@@ -37,6 +38,9 @@ var getCmd = &cobra.Command{
 					} else {
 						ganime.GetAnimeInfo(id)
 					}
+				} else if args[1] == "guess" {
+					id := guess.GetIDFromGuess(args[2])
+					ganime.GetAnimeInfo(id)
 				}
 			}
 		} else {

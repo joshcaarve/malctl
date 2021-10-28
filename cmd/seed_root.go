@@ -13,9 +13,9 @@ var seedCmd = &cobra.Command{
 	Long:  `WIP`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
-			fmt.Println("seed What?!")
-		} else {
 			seed.SeedAnimeHash("")
+		} else {
+			fmt.Println("too many args :)")
 		}
 	},
 }
