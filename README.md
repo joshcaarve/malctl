@@ -85,7 +85,7 @@ Duration: 24 min. per ep.
 ```
 
 ## Getting anime information via a guess
-If you don't know the ID or the name defined in MAL, you can guess by using a google search.
+If you don't know the ID or didn't seed the db and don't know the exact name, you can guess by having malctl perform google search.
 
 This feature was added for fun.
 ```sh
@@ -113,3 +113,5 @@ Status: "completed", Score: 5, Episodes Watched: 10, Comments:
 ## Shortcomings
 Of course more commands can be added such as login and update.
 Also, it's only written to pull anime, but can easily add manga feature as well.
+
+Also, didn't include steps to install the binary globally.
